@@ -1,0 +1,1 @@
+{"contract":"BotBadge","file":"contracts/BotBadge.sol","initSignature":"initialize(address,address)","initArgsEnv":["OWNER_ADDRESS","VOUCHER_SIGNER"]}
