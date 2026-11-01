@@ -301,23 +301,23 @@ export function WalletProvider({
 export function ConnectWalletButton() {
   const { status, address, balance, switchChain, openWalletModal, disconnect } = useWallet();
   const btn =
-    "rounded-lg px-4 py-2 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary";
+    "px-5 py-2.5 text-[11px] font-light uppercase tracking-[0.2em] focus-visible:outline-2 focus-visible:outline-primary";
 
   if (status === "ready") {
     return (
       <button
         onClick={disconnect}
-        className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-mono text-foreground hover:border-secondary focus-visible:outline-2 focus-visible:outline-primary"
+        className="inline-flex items-center gap-2 border border-ink bg-card px-3 py-1.5 text-xs font-mono font-light text-foreground hover:bg-hairline/50 focus-visible:outline-2 focus-visible:outline-primary"
         title={`${address} · ${Number(formatEther(balance)).toFixed(4)} BOT · click to disconnect`}
       >
-        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-success" />
+        <span aria-hidden className="h-1.5 w-1.5 bg-success" />
         {short(address)}
       </button>
     );
   }
   if (status === "wrongChain") {
     return (
-      <button onClick={switchChain} className={`${btn} bg-warning text-black hover:bg-warning/80`}>
+      <button onClick={switchChain} className={`${btn} bg-amber text-canvas hover:bg-amber/90`}>
         Wrong network · switch
       </button>
     );

@@ -2,19 +2,20 @@
 
 import { Toaster as Sonner } from "sonner";
 
-// Axiom-styled: flat carbon card, hairline border, 2px radius, mono.
+// Catalogue register: flat white slip, hairline ink border, square corners.
 export default function Toaster() {
   return (
     <Sonner
-      theme="dark"
+      theme="light"
       position="bottom-right"
       toastOptions={{
         style: {
-          background: "var(--color-card)",
-          border: "1px solid var(--color-border-strong)",
-          borderRadius: 2,
-          color: "var(--color-foreground)",
+          background: "#ffffff",
+          border: "1px solid #000000",
+          borderRadius: 0,
+          color: "#000000",
           fontFamily: "inherit",
+          fontWeight: 300,
           boxShadow: "none",
         },
       }}

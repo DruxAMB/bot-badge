@@ -30,15 +30,15 @@ function WalletRow({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex w-full items-center gap-3 rounded-lg border border-border px-3.5 py-3 text-left hover:border-secondary hover:bg-elevated focus-visible:outline-2 focus-visible:outline-primary transition-colors disabled:opacity-60 disabled:hover:border-border disabled:hover:bg-transparent"
+      className="flex w-full items-center gap-3 border border-hairline px-3.5 py-3 text-left hover:border-ink hover:bg-canvas focus-visible:outline-2 focus-visible:outline-primary transition-colors disabled:opacity-60 disabled:hover:border-border disabled:hover:bg-transparent"
     >
       {icon ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={icon} alt="" aria-hidden className="h-6 w-6 rounded" />
+        <img src={icon} alt="" aria-hidden className="h-6 w-6" />
       ) : (
         <span
           aria-hidden
-          className="flex h-6 w-6 items-center justify-center rounded border border-border-strong font-mono text-xs text-primary"
+          className="flex h-6 w-6 items-center justify-center border border-border-strong font-mono text-xs text-primary"
         >
           ›_
         </span>
@@ -162,11 +162,11 @@ export default function WalletModal({
               href={c.install}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center gap-3 rounded-lg border border-border px-3.5 py-3 text-left hover:border-secondary hover:bg-elevated focus-visible:outline-2 focus-visible:outline-primary transition-colors"
+              className="flex w-full items-center gap-3 border border-hairline px-3.5 py-3 text-left hover:border-ink hover:bg-canvas focus-visible:outline-2 focus-visible:outline-primary transition-colors"
             >
               <span
                 aria-hidden
-                className="flex h-6 w-6 items-center justify-center rounded border border-border-strong font-mono text-xs text-muted-foreground"
+                className="flex h-6 w-6 items-center justify-center border border-border-strong font-mono text-xs text-muted-foreground"
               >
                 ›_
               </span>
@@ -206,7 +206,7 @@ export default function WalletModal({
           type="button"
           onClick={() => setShowManual((s) => !s)}
           aria-expanded={showManual}
-          className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-primary"
+          className="w-full bg-primary px-4 py-2.5 text-[11px] font-light uppercase tracking-[0.2em] text-primary-foreground hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-primary"
         >
           {showManual
             ? "Hide network details ▴"
@@ -218,7 +218,7 @@ export default function WalletModal({
           inert={!showManual}
         >
           <div className="manual-inner">
-            <div className="manual-body mt-2 space-y-2.5 rounded bg-background border border-border p-3">
+            <div className="manual-body mt-2 space-y-2.5 bg-canvas border border-hairline p-3">
               <CopyRow label="Network name" value={chain.name} />
               <CopyRow label="Chain ID" value={String(chain.id)} />
               <CopyRow label="Chain ID (hex)" value={chain.hexId} />

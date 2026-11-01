@@ -1,34 +1,52 @@
 @import "tailwindcss";
 
+/* teenage engineering register: industrial catalogue under studio light.
+   Canvas mist field, hairline rules instead of cards, zero radius everywhere,
+   type at weight 100/300. The badge object is the only dense visual. */
 @theme {
-  --font-sans: var(--font-jbmono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jbmono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --color-background: #000000;
-  --color-card: #111111;
-  --color-elevated: #191919;
-  --color-border: #202020;
-  --color-border-strong: #3a3a3a;
-  --color-rule: #505050;
-  --color-foreground: #eeeeee;
-  --color-secondary: #b4b4b4;
-  --color-muted-foreground: #7e7e7e;
-  --color-steel: #606060;
-  --color-primary: #58c98a;
-  --color-primary-hover: #3fae70;
-  --color-primary-foreground: #000000;
-  --color-success: #5fae72;
-  --color-warning: #d19a3a;
-  --color-danger: #d1553b;
-  --radius-sm: 2px; --radius-md: 2px; --radius-lg: 2px; --radius-xl: 2px; --radius-2xl: 2px; --radius-3xl: 2px;
-  --color-surface: #000000;
+
+  --color-canvas: #f6f8f7;
+  --color-ink: #000000;
+  --color-carbon: #0f0e12;
+  --color-hairline: #e5e5e5;
+  --color-rule: #b2b2b2;        /* decorative rules/borders only — not text */
+  --color-graphite: #555555;    /* muted text — darker than source #b2b2b2 for legibility */
+  --color-steel: #767676;
+
+  --color-background: var(--color-canvas);
+  --color-card: #ffffff;
+  --color-elevated: #ffffff;
+  --color-border: var(--color-hairline);
+  --color-border-strong: var(--color-ink);
+  --color-foreground: var(--color-ink);
+  --color-secondary: var(--color-graphite);
+  --color-muted-foreground: var(--color-steel);
+
+  --color-primary: var(--color-carbon);         /* the single dark element = primary action */
+  --color-primary-hover: #2a2830;
+  --color-primary-foreground: #f6f8f7;
+
+  /* one chromatic note: the amber mark, per the source system */
+  --color-amber: #c98a04;
+  --color-success: #1a7f43;
+  --color-warning: var(--color-amber);
+  --color-danger: #b3261e;
+
+  --radius-none: 0px; --radius-sm: 0px; --radius-md: 0px; --radius-lg: 0px;
+  --radius-xl: 0px; --radius-2xl: 0px; --radius-3xl: 0px; --radius-full: 0px;
 }
+
+html { font-weight: 300; }
+
 .manual-expand { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.24s ease; }
 .manual-expand[data-open] { grid-template-rows: 1fr; opacity: 1; }
 .manual-expand .manual-inner { overflow: hidden; min-height: 0; }
 .manual-expand .manual-body { transform: translateY(-6px); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); }
 .manual-expand[data-open] .manual-body { transform: none; }
 @media (prefers-reduced-motion: reduce) { .manual-expand, .manual-expand .manual-body { transition: none; } }
-* { scrollbar-width: thin; scrollbar-color: var(--color-border-strong) transparent; }
+* { scrollbar-width: thin; scrollbar-color: var(--color-rule) transparent; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border-strong); border: 3px solid var(--color-background); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--color-rule); border: 3px solid var(--color-canvas); }

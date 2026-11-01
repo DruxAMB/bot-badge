@@ -18,6 +18,33 @@ function readContract() {
 
 type Phase = "quiz" | "passed" | "minted";
 
+/* The badge — the only dense object on the page. A carbon plate shot on the
+   seamless canvas backdrop, like a product in the catalogue. */
+function BadgeObject({ id }: { id?: number | null }) {
+  return (
+    <div className="mx-auto flex aspect-square w-44 flex-col items-center justify-between bg-carbon px-4 py-5 text-canvas sm:w-52">
+      <p className="w-full text-left font-mono text-[9px] tracking-[0.3em] text-canvas/50">
+        BOT-CHAIN · 677
+      </p>
+      <div className="flex h-24 w-24 items-center justify-center rounded-[50%] border border-canvas/80 sm:h-28 sm:w-28">
+        <span className="text-2xl font-thin tracking-[0.25em] sm:text-3xl">BOT</span>
+      </div>
+      <p className="w-full text-right font-mono text-[9px] tracking-[0.3em] text-canvas/50">
+        {id != null ? `NO. ${String(id).padStart(4, "0")}` : "SOULBOUND"}
+      </p>
+    </div>
+  );
+}
+
+function SpecRow({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
+  return (
+    <div className="flex items-baseline justify-between border-t border-hairline py-2.5 last:border-b">
+      <dt className="text-[10px] font-light uppercase tracking-[0.2em] text-muted-foreground">{k}</dt>
+      <dd className={`text-xs font-light text-foreground ${mono ? "font-mono" : ""}`}>{v}</dd>
+    </div>
+  );
+}
+
 function Quiz() {
   const { status, address, provider } = useWallet();
   const [answers, setAnswers] = useState<number[]>(Array(QUESTIONS.length).fill(-1));
@@ -110,40 +137,81 @@ function Quiz() {
   };
 
   return (
-    <main className="mx-auto max-w-xl px-4 pb-20">
+    <main className="mx-auto max-w-3xl px-5 pb-24">
       {!DEPLOYED && (
-        <p className="mt-6 rounded border border-warning/40 bg-card px-4 py-3 text-xs text-warning">
+        <p className="mt-6 border border-amber/50 bg-card px-4 py-3 text-xs font-light text-amber">
           contract not deployed yet — run <code>npm run deploy</code> after funding the deployer
         </p>
       )}
 
-      <p className="mt-6 text-xs text-muted-foreground">
-        Badges minted: <span className="text-foreground">{totalMinted ?? "—"}</span> · one per
-        wallet · non-transferable · mint requires passing a {PASS}/5 quiz.
-      </p>
+      {/* ——— the product shot ——— */}
+      <section className="mt-10 border-y border-hairline py-12 sm:mt-14 sm:py-16">
+        <div className="grid items-center gap-10 sm:grid-cols-[1fr_auto]">
+          <div>
+            <p className="text-[10px] font-light uppercase tracking-[0.3em] text-muted-foreground">
+              catalogue no. BOT-001 · BOT Chain mainnet
+            </p>
+            <h2 className="mt-4 text-4xl font-thin leading-[1.1] tracking-tight text-foreground sm:text-5xl">
+              the badge is<br />the product.
+            </h2>
+            <p className="mt-5 max-w-sm text-[13px] font-light leading-relaxed text-secondary">
+              A soulbound credential for people who actually know the chain they
+              build on. Pass a five-question quiz, receive a signed voucher,
+              mint the object — it stays bound to your wallet forever.
+            </p>
+          </div>
+          <BadgeObject id={phase === "minted" ? badgeId : null} />
+        </div>
+      </section>
+
+      {/* ——— spec sheet ——— */}
+      <section className="mt-10">
+        <h3 className="text-[10px] font-light uppercase tracking-[0.3em] text-muted-foreground">
+          01 — specifications
+        </h3>
+        <dl className="mt-4">
+          <SpecRow k="standard" v="ERC-721 · soulbound (non-transferable)" />
+          <SpecRow k="chain" v={`BOT Chain · ${NET.chainId}`} mono />
+          <SpecRow k="supply rule" v="one per wallet" />
+          <SpecRow k="qualification" v={`${PASS}/${QUESTIONS.length} on the quiz`} />
+          <SpecRow k="minted to date" v={totalMinted == null ? "—" : String(totalMinted)} mono />
+          <SpecRow k="contract" v={`${CONTRACT_ADDRESS.slice(0, 10)}…${CONTRACT_ADDRESS.slice(-6)}`} mono />
+        </dl>
+      </section>
 
       {phase === "minted" && (
-        <section className="mt-6 rounded-lg border border-success/40 bg-card p-6 text-center">
-          <p className="text-3xl" aria-hidden>
-            ▮
+        <section className="mt-14 text-center">
+          <h3 className="text-[10px] font-light uppercase tracking-[0.3em] text-muted-foreground">
+            registered
+          </h3>
+          <p className="mt-4 text-2xl font-thin text-foreground">
+            Badge No. {String(badgeId ?? 0).padStart(4, "0")}
           </p>
-          <h2 className="mt-2 text-sm font-bold text-foreground">Badge #{badgeId}</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-2 text-xs font-light text-secondary">
             already minted to this wallet — soulbound, yours forever
           </p>
         </section>
       )}
 
       {phase === "passed" && (
-        <section className="mt-6 rounded-lg border border-primary/50 bg-card p-6 text-center">
-          <h2 className="text-sm font-bold text-foreground">Quiz passed — {score}/5</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            the backend issued a signed voucher for your wallet. Mint to claim the badge.
+        <section className="mt-14 border-t border-ink pt-8">
+          <h3 className="text-[10px] font-light uppercase tracking-[0.3em] text-muted-foreground">
+            03 — claim
+          </h3>
+          <p className="mt-4 text-2xl font-thin text-foreground">
+            qualified · {score}/{QUESTIONS.length}
+          </p>
+          <p className="mt-2 max-w-md text-xs font-light leading-relaxed text-secondary">
+            the issuer signed a voucher bound to your wallet. present it to the
+            contract to mint — the signature is the authorization.
+          </p>
+          <p className="mt-4 break-all font-mono text-[10px] leading-relaxed text-muted-foreground">
+            {voucher.slice(0, 66)}…
           </p>
           <button
             onClick={mint}
             disabled={busy}
-            className="mt-4 rounded bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary-hover disabled:opacity-50"
+            className="mt-6 w-full bg-primary px-6 py-3.5 text-xs font-light uppercase tracking-[0.25em] text-primary-foreground hover:bg-primary-hover disabled:opacity-50 sm:w-auto sm:px-12"
           >
             {busy ? "minting…" : "Mint badge"}
           </button>
@@ -151,18 +219,23 @@ function Quiz() {
       )}
 
       {phase === "quiz" && (
-        <section className="mt-6 rounded-lg border border-border bg-card p-5">
-          <h2 className="text-sm font-bold text-foreground">The BOT Chain quiz</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
+        <section className="mt-14">
+          <h3 className="text-[10px] font-light uppercase tracking-[0.3em] text-muted-foreground">
+            02 — qualification
+          </h3>
+          <p className="mt-3 text-xs font-light text-secondary">
             answer {QUESTIONS.length} questions — {PASS} correct earns the mint voucher.
           </p>
-          <ol className="mt-4 space-y-5">
+          <ol className="mt-8 space-y-10">
             {QUESTIONS.map((q, qi) => (
               <li key={qi}>
-                <p className="text-xs text-foreground">
-                  {qi + 1}. {q.q}
+                <p className="text-sm font-light text-foreground">
+                  <span className="mr-3 font-mono text-[10px] text-muted-foreground">
+                    {String(qi + 1).padStart(2, "0")}
+                  </span>
+                  {q.q}
                 </p>
-                <div className="mt-2 grid grid-cols-2 gap-1.5">
+                <div className="mt-4 grid grid-cols-2 gap-px bg-hairline sm:grid-cols-4">
                   {q.options.map((o, oi) => (
                     <button
                       key={oi}
@@ -170,10 +243,10 @@ function Quiz() {
                         setAnswers((a) => a.map((x, i) => (i === qi ? oi : x)))
                       }
                       aria-pressed={answers[qi] === oi}
-                      className={`rounded border px-2 py-1.5 text-left text-[11px] transition-colors ${
+                      className={`bg-canvas px-3 py-2.5 text-left text-[11px] font-light transition-colors ${
                         answers[qi] === oi
-                          ? "border-primary text-primary"
-                          : "border-border text-secondary hover:border-secondary"
+                          ? "bg-carbon text-canvas"
+                          : "text-secondary hover:bg-hairline/60 hover:text-foreground"
                       }`}
                     >
                       {o}
@@ -186,10 +259,15 @@ function Quiz() {
           <button
             onClick={submitQuiz}
             disabled={busy || answers.includes(-1) || status !== "ready"}
-            className="mt-5 w-full rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover disabled:opacity-50"
+            className="mt-10 w-full bg-primary px-4 py-3.5 text-xs font-light uppercase tracking-[0.25em] text-primary-foreground hover:bg-primary-hover disabled:opacity-40"
           >
             {busy ? "checking…" : "Submit answers"}
           </button>
+          {status !== "ready" && (
+            <p className="mt-3 text-center text-[11px] font-light text-muted-foreground">
+              connect your wallet to submit
+            </p>
+          )}
         </section>
       )}
     </main>
@@ -199,19 +277,46 @@ function Quiz() {
 export default function Home() {
   return (
     <WalletProvider chainId={NET.chainId} chainName={NET.name} rpc={NET.rpc} explorer={NET.explorer}>
-      <div className="min-h-screen bg-surface text-foreground font-sans">
-        <header className="mx-auto flex max-w-xl items-center justify-between px-4 pt-6">
+      <div className="min-h-screen bg-canvas text-foreground font-sans">
+        <header className="mx-auto flex max-w-3xl items-center justify-between px-5 pt-6">
           <div>
-            <h1 className="text-base font-bold tracking-tight text-foreground">
-              <span className="text-primary">▮</span> BotBadge
+            <h1 className="text-sm font-light uppercase tracking-[0.35em] text-foreground">
+              BotBadge
             </h1>
-            <p className="text-[11px] text-muted-foreground">
-              learn-to-earn badge · BOT Chain mainnet
+            <p className="mt-1 text-[10px] font-light uppercase tracking-[0.2em] text-muted-foreground">
+              learn-to-earn · BOT Chain
             </p>
           </div>
           <ConnectWalletButton />
         </header>
         <Quiz />
+        <footer className="mt-4 bg-carbon text-canvas">
+          <div className="mx-auto flex max-w-3xl flex-col gap-5 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/bot-chain.svg" alt="BOT Chain" className="h-5 w-auto" />
+              <p className="text-[10px] font-light uppercase tracking-[0.2em] text-canvas/50">
+                issued on BOT Chain
+              </p>
+            </div>
+            <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-light text-canvas/70">
+              <a href="https://www.botchain.ai" target="_blank" rel="noopener noreferrer" className="hover:text-canvas">
+                botchain.ai ↗
+              </a>
+              <a href={NET.explorer} target="_blank" rel="noopener noreferrer" className="hover:text-canvas">
+                BOT Chain Explorer ↗
+              </a>
+              <a
+                href={`${NET.explorer}/address/${CONTRACT_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono hover:text-canvas"
+              >
+                {`${CONTRACT_ADDRESS.slice(0, 10)}…${CONTRACT_ADDRESS.slice(-6)}`}
+              </a>
+            </nav>
+          </div>
+        </footer>
       </div>
       <Toaster />
     </WalletProvider>
