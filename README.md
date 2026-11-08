@@ -3,7 +3,7 @@
 > A free, non-transferable (soulbound) ERC-721 badge earned by passing a
 > five-question quiz about BOT Chain. One badge per wallet, bound forever.
 
-**Live:** [app-5si5.vercel.app](https://app-5si5.vercel.app/) ·
+**Live:** [botchain-botbadge.netlify.app](https://botchain-botbadge.netlify.app/) ·
 **Contract:** [`0x4a9dB30ca84Ca851ded1432Be7Fb2ce91047c35A`](https://scan.botchain.ai/address/0x4a9dB30ca84Ca851ded1432Be7Fb2ce91047c35A)
 (proxy — permanent address)
 
@@ -21,7 +21,7 @@ the proof.
 
 1. **Quiz** — five questions about BOT Chain (gas token, chain ID, the
    leaderboard, the explorer, the prize pool).
-2. **Server-verified voucher** — `POST /api/voucher` scores your answers
+2. **Server-verified voucher** — `POST /.netlify/functions/voucher` scores your answers
    server-side (the answer key never reaches the browser) and, on ≥4/5,
    returns an EIP-191 signature over `keccak256(contract, chainId, recipient)`
    bound to *your* wallet.
@@ -31,7 +31,7 @@ the proof.
 
 ```mermaid
 flowchart LR
-    A["answer 5 questions"] --> B["POST /api/voucher"]
+    A["answer 5 questions"] --> B["POST /.netlify/functions/voucher"]
     B -->|"score ≥ 4/5"| C["signed voucher<br/>(bound to wallet)"]
     C --> D["mint(voucher)"]
     D --> E["soulbound ERC-721<br/>badge #N"]
@@ -69,7 +69,7 @@ flowchart LR
   by rotating `setVoucherSigner`.
 - The answer key lives in `app/src/lib/answers.ts`, imported only by the
   API route — it is not in the client bundle.
-- `POST /api/voucher` validates address format, answer array shape and
+- `POST /.netlify/functions/voucher` validates address format, answer array shape and
   per-element bounds, and rate-limits per IP (20 attempts / 10 min,
   best-effort under serverless).
 - The voucher binds `contract + chainId + recipient` — it can't be
@@ -89,8 +89,12 @@ is by design — answers can't be checked on-chain without leaking them).
 cd app
 npm install
 cp .env.example .env.local   # VOUCHER_KEY=0x… (any dedicated key)
-npm run dev                  # http://localhost:3000
+npx netlify dev              # serves the site AND the voucher function
 ```
+
+`next dev` alone works for the UI but the voucher endpoint 404s (it lives in
+`netlify/functions/`, which only `netlify dev` or a deploy runs) — the app
+surfaces this as the designed "voucher service unreachable" error state.
 
 The contract is already deployed and initialized on mainnet — the local
 `VOUCHER_KEY` must derive the address set as `voucherSigner` on-chain for

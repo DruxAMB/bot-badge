@@ -90,7 +90,7 @@ function Quiz() {
     if (status !== "ready") return toast.warning("connect your wallet first");
     setBusy(true);
     try {
-      const r = await fetch("/api/voucher", {
+      const r = await fetch("/.netlify/functions/voucher", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ address, answers }),
