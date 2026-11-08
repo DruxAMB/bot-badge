@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BotBadge — pitch</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: "Inter", "Segoe UI", sans-serif; background:#f6f8f7; color:#000;
+         font-weight:300; width:1120px; }
+  .hero { display:flex; align-items:center; justify-content:space-between;
+          padding:56px 64px 48px; border-bottom:1px solid #e5e5e5; }
+  .hero h1 { font-size:56px; font-weight:100; letter-spacing:-0.02em; line-height:1.05; }
+  .hero .kicker { font-size:10px; letter-spacing:0.32em; text-transform:uppercase; color:#767; margin-bottom:18px; }
+  .hero p.sub { margin-top:16px; font-size:14px; color:#555; max-width:480px; line-height:1.6; }
+  .badge { width:200px; height:200px; background:#0f0e12; color:#f6f8f7; flex-shrink:0;
+           display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+           padding:18px 16px; font-family:"JetBrains Mono", monospace; }
+  .badge .top, .badge .bot { font-size:9px; letter-spacing:0.3em; color:rgba(246,248,247,.5); width:100%; }
+  .badge .top { text-align:left; } .badge .bot { text-align:right; }
+  .badge .ring { width:110px; height:110px; border:1px solid rgba(246,248,247,.8); border-radius:50%;
+                 display:flex; align-items:center; justify-content:center;
+                 font-size:26px; letter-spacing:0.25em; font-weight:100; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:0; padding:0 64px; }
+  .cell { border-bottom:1px solid #e5e5e5; padding:28px 0; }
+  .cell:nth-child(odd) { border-right:1px solid #e5e5e5; padding-right:36px; }
+  .cell:nth-child(even) { padding-left:36px; }
+  .cell h3 { font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:#767; font-weight:300; margin-bottom:10px; }
+  .cell p { font-size:13px; line-height:1.65; color:#222; }
+  .flow { margin:36px 64px; padding:28px 0; border-top:1px solid #000; border-bottom:1px solid #000;
+          display:flex; align-items:center; justify-content:space-between;
+          font-family:"JetBrains Mono", monospace; font-size:11px; letter-spacing:0.08em; }
+  .flow span { background:#f6f8f7; padding:6px 2px; }
+  .flow .arrow { color:#b2b2b2; }
+  .spec { margin:0 64px; }
+  .spec h3, .meta h3 { font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:#767; font-weight:300; margin-bottom:14px; }
+  .spec table { width:100%; border-collapse:collapse; font-size:12px; }
+  .spec td { border-top:1px solid #e5e5e5; padding:9px 0; }
+  .spec td:first-child { color:#555; letter-spacing:0.14em; text-transform:uppercase; font-size:10px; width:220px; }
+  .spec td:last-child { text-align:right; font-family:"JetBrains Mono", monospace; }
+  .meta { margin:36px 64px 0; padding-bottom:40px; }
+  .meta p { font-size:12px; color:#333; line-height:1.7; }
+  footer { background:#0f0e12; color:#f6f8f7; padding:26px 64px; display:flex;
+           align-items:center; justify-content:space-between; font-size:11px; }
+  footer .links { display:flex; gap:24px; color:rgba(246,248,247,.7); }
+  footer .dim { color:rgba(246,248,247,.5); font-family:"JetBrains Mono", monospace; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div>
+    <p class="kicker">BotBadge · learn-to-earn · BOT Chain mainnet</p>
+    <h1>the badge is<br>the product.</h1>
+    <p class="sub">A soulbound credential for people who actually know the chain
+    they build on. Five questions, a signed voucher, one mint — possession is
+    the proof.</p>
+  </div>
+  <div class="badge">
+    <p class="top">BOT-CHAIN · 677</p>
+    <div class="ring">BOT</div>
+    <p class="bot">SOULBOUND</p>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="cell">
+    <h3>Problem</h3>
+    <p>"Proof of participation" NFTs are given to anyone who clicks — so they
+    prove nothing. Ecosystems need a credential that carries information.</p>
+  </div>
+  <div class="cell">
+    <h3>Product</h3>
+    <p>A non-transferable ERC-721 earned by passing a 5-question BOT Chain
+    quiz. One per wallet, soulbound forever — the badge is evidence of
+    knowledge, not attendance.</p>
+  </div>
+  <div class="cell">
+    <h3>How it works</h3>
+    <p>A backend scores the quiz server-side (the answer key never reaches the
+    browser) and issues an EIP-191 voucher bound to your wallet. The contract
+    verifies the signature at mint.</p>
+  </div>
+  <div class="cell">
+    <h3>Why BOT Chain</h3>
+    <p>Every mint is a real mainnet transaction. The quiz teaches the chain —
+    gas token, chain ID, explorer, leaderboard — turning a badge claim into
+    onboarding.</p>
+  </div>
+</div>
+
+<div class="flow">
+  <span>QUIZ ×5</span><span class="arrow">———</span>
+  <span>SCORE ≥ 4/5</span><span class="arrow">———</span>
+  <span>SIGNED VOUCHER</span><span class="arrow">———</span>
+  <span>MINT(voucher)</span><span class="arrow">———</span>
+  <span>BADGE #N</span>
+</div>
+
+<div class="spec">
+  <h3>Deployment — live on BOT Chain mainnet</h3>
+  <table>
+    <tr><td>Proxy (permanent)</td><td>0x4a9dB30ca84Ca851ded1432Be7Fb2ce91047c35A</td></tr>
+    <tr><td>Implementation</td><td>0x8390E6DABA2fA6c638F6D9Da2a06a60230dfb99f</td></tr>
+    <tr><td>Standard</td><td>ERC-721 · soulbound · UUPS upgradeable</td></tr>
+    <tr><td>App</td><td>app-5si5.vercel.app · Next.js + ethers v6</td></tr>
+  </table>
+</div>
+
+<div class="meta">
+  <h3>Status &amp; roadmap</h3>
+  <p>Live on mainnet with a public dApp. Voucher signing is key-bound and
+  rate-limited; the contract enforces one-per-wallet. Next: badge-gated
+  integrations — let any BOT Chain dApp read <em>hasMinted</em> as a
+  "verified community member" primitive.</p>
+</div>
+
+<footer>
+  <span>BotBadge — soulbound learn-to-earn credential on BOT Chain</span>
+  <span class="links"><span>botchain.ai</span><span>scan.botchain.ai</span><span>github.com/DruxAMB/bot-badge</span></span>
+  <span class="dim">0x4a9d…47c35A</span>
+</footer>
+
+</body>
+</html>
