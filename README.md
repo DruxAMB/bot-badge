@@ -5,7 +5,8 @@
 
 **Live:** [botchain-botbadge.netlify.app](https://botchain-botbadge.netlify.app/) ·
 **Contract:** [`0x4a9dB30ca84Ca851ded1432Be7Fb2ce91047c35A`](https://scan.botchain.ai/address/0x4a9dB30ca84Ca851ded1432Be7Fb2ce91047c35A)
-(proxy — permanent address)
+(proxy — permanent address) ·
+**X:** [@botbadgeai](https://x.com/botbadgeai)
 
 ![BotBadge — the badge is the product](docs/hero.png)
 
